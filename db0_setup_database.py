@@ -3,6 +3,7 @@ import asyncpg
 
 
 async def create_database():
+    # Connect to the default 'postgres' database to create a new database
     conn = await asyncpg.connect(
         database="postgres",
         user="postgres",
@@ -16,6 +17,7 @@ async def create_database():
 
 
 async def setup_table():
+    # Connect to the newly created 'demo_db' database to create a new table
     conn = await asyncpg.connect(
         database="demo_db",
         user="postgres",
@@ -36,6 +38,7 @@ async def setup_table():
     """
     )
 
+    # Create a function that notifies the 'data_channel' channel whenever a new row is inserted
     await conn.execute(
         """
         CREATE OR REPLACE FUNCTION notify_trigger() RETURNS trigger AS $$
@@ -47,6 +50,7 @@ async def setup_table():
     """
     )
 
+    # Create a trigger that calls the 'notify_trigger' function after a new row is inserted
     await conn.execute(
         """
         CREATE TRIGGER data_insert_notify

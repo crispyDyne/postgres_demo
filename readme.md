@@ -12,3 +12,11 @@ Things most likely to go wrong:
 - User name or password is incorrect. The default user name is 'postgres' and the default password is 'password'. You can change these in the docker run command.
 - Database name is incorrect. The default database name is 'postgres'. You can change this in the docker run command.
 
+
+## Running the examples
+- db0_setup_database.py: This script will create a database and a table in the database as well as notifications for the table.
+    - Run this script first. It only needs to be run once.
+- db1_add_data.py: This script will insert data into the table.
+    - Run this script after running db0_setup_database.py.
+- db2_listen.py: This script will listen for notifications from the table.
+    - Run this script while db1_add_data.py is running. It will print out the notifications to the console.

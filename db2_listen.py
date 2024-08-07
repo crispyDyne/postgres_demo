@@ -19,6 +19,7 @@ async def fetch_and_print_data(conn, payload):
 
 
 async def listen_notifications():
+    # Connect to the 'demo_db' database to listen for notifications
     conn = await asyncpg.connect(
         database="demo_db",
         user="postgres",
