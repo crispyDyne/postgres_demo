@@ -1,6 +1,6 @@
 import asyncio
 
-from db0_setup_database import connect_to_db
+from db_config import connect_to_db
 
 
 async def read_all_data():

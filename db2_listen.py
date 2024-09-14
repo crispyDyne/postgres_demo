@@ -1,6 +1,6 @@
 import asyncio
 
-from db0_setup_database import connect_to_db
+from db_config import connect_to_db
 
 
 async def fetch_and_print_data(conn, payload):

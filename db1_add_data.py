@@ -1,7 +1,7 @@
 import asyncio
 import random
 
-from db0_setup_database import connect_to_db
+from db_config import connect_to_db
 
 
 async def add_data():
