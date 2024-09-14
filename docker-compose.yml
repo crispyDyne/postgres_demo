@@ -1,0 +1,15 @@
+version: '3'
+services:
+  timescaledb:
+    image: timescale/timescaledb-ha:pg16
+    container_name: timescaledb
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: demo_db
+    volumes:
+      - timescale_data:/var/lib/postgresql/data
+volumes:
+  timescale_data:

@@ -1,6 +1,7 @@
 import asyncio
 import asyncpg
 
+# should match the configuration in docker-compose.yml
 config = {
     "database": "demo_db",
     "user": "postgres",

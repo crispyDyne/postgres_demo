@@ -20,3 +20,56 @@ Things most likely to go wrong:
     - Run this script after running db0_setup_database.py.
 - db2_listen.py: This script will listen for notifications from the table.
     - Run this script while db1_add_data.py is running. It will print out the notifications to the console.
+
+
+# Setting Up TimescaleDB in Docker on Ubuntu
+
+## Prerequisites
+1. **Docker**: 
+
+    ```bash
+    sudo apt-get update
+    sudo apt-get install docker.io
+    ```
+
+2. **Docker Compose Plugin**
+
+
+    ```bash
+    sudo apt update
+    sudo apt install docker-compose-v2
+    ```
+
+3. **Install psql**:
+
+    ```bash
+    sudo apt-get install postgresql-client
+    ```
+
+## Run a TimescaleDB Container
+    
+```bash
+sudo docker compose up -d
+```
+
+This command does the following:
+- `docker-compose up`: Starts the container.
+- `-d`: Runs the container in detached mode (background).
+
+The configuration for the TimescaleDB container is defined in the `docker-compose.yml` file. You can customize this file to change the container's settings, such as the port mapping, environment variables, and volumes.
+
+## Other Useful Commands
+
+### List Running Containers
+
+```bash
+sudo docker ps
+```
+
+### Stop the Container
+
+```bash
+sudo docker stop timescaledb
+```
+
+Assumes the container is named `timescaledb` (as defined in the `docker-compose.yml` file).
