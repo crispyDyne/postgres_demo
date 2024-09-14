@@ -20,6 +20,9 @@ Things most likely to go wrong:
     - Run this script after running db0_setup_database.py.
 - db2_listen.py: This script will listen for notifications from the table.
     - Run this script while db1_add_data.py is running. It will print out the notifications to the console.
+- dbt_timescale_setup.py: Similar to db0_setup_database.py, but sets up TimescaleDB specific features. Specifically, it sets up a continuous aggregates, which  pre-compute statistics like averages, sums, etc. over specified time intervals (1 second, 1 minute, 1 hour, etc.).
+    - Run this script first, instead of db0_setup_database.py, if you want to use TimescaleDB specific features. It only needs to be run once.
+    - The other scripts will work with or without TimescaleDB specific features.
 
 
 # Setting Up TimescaleDB in Docker on Ubuntu
