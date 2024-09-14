@@ -13,10 +13,7 @@ async def fetch_and_print_data(conn, payload):
     )
 
     # Print the fetched row
-    print(
-        f"Fetched data: ID={row['id']}, Time={row['time']}, "
-        f"Channel 1={row['channel_1']}, Channel 2={row['channel_2']}, Channel 3={row['channel_3']}"
-    )
+    print(row)
 
 
 async def listen_notifications():

@@ -1,7 +1,7 @@
 import asyncio
 import random
 
-from db_config import connect_to_db
+from db_config import connect_to_db, channels
 
 
 async def add_data():
@@ -9,22 +9,29 @@ async def add_data():
     conn = await connect_to_db()
     # Insert random data into the 'data_table' table every 5 seconds
     try:
+        channel_str = ", ".join(channels)
+        channel_sql = ", ".join([f"${i}" for i in range(1, len(channels) + 1)])
         while True:
-            channel_1 = random.uniform(0, 100)
-            channel_2 = random.uniform(0, 100)
-            channel_3 = random.uniform(0, 100)
+            channel_data = []
+            for _ in channels:
+                channel_data.append(random.uniform(0, 100))
 
             await conn.execute(
-                """
-                INSERT INTO data_table (channel_1, channel_2, channel_3)
-                VALUES ($1, $2, $3);
+                f"""
+                INSERT INTO data_table ({channel_str})
+                VALUES ({channel_sql});
                 """,
-                channel_1,
-                channel_2,
-                channel_3,
+                *channel_data,
             )
 
-            print(f"Inserted data: {channel_1}, {channel_2}, {channel_3}")
+            data_str = "".join(
+                [
+                    f"{channel}: {data:.2f}, "
+                    for (channel, data) in zip(channels, channel_data)
+                ]
+            )
+            data_str = data_str[:-2]  # Remove the trailing comma
+            print(f"Inserted data - {data_str}")
             await asyncio.sleep(5)  # Insert data every 5 seconds
 
     finally:

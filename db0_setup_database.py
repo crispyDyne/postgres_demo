@@ -1,6 +1,6 @@
 import asyncio
 
-from db_config import config, connect_to_db, connect_to_postgres
+from db_config import config, channels, connect_to_db, connect_to_postgres
 
 
 async def create_database():
@@ -13,14 +13,13 @@ async def create_database():
 async def setup_table():
     conn = await connect_to_db()
 
+    channels_str = ", ".join([f"{channel} DOUBLE PRECISION" for channel in channels])
     await conn.execute(
-        """
+        f"""
         CREATE TABLE IF NOT EXISTS data_table (
             id SERIAL PRIMARY KEY,
             time TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-            channel_1 DOUBLE PRECISION,
-            channel_2 DOUBLE PRECISION,
-            channel_3 DOUBLE PRECISION
+            {channels_str}
         );
         """
     )

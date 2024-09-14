@@ -9,6 +9,8 @@ config = {
     "port": "5432",
 }
 
+channels = ["channel_1", "channel_2", "channel_3"]
+
 
 async def connect_to_postgres():
     pg_config = config.copy()
