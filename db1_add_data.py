@@ -18,7 +18,7 @@ async def add_data():
                 """
                 INSERT INTO data_table (channel_1, channel_2, channel_3)
                 VALUES ($1, $2, $3);
-            """,
+                """,
                 channel_1,
                 channel_2,
                 channel_3,

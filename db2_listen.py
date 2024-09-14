@@ -8,7 +8,7 @@ async def fetch_and_print_data(conn, payload):
     row = await conn.fetchrow(
         """
         SELECT * FROM data_table WHERE id = $1;
-    """,
+        """,
         int(payload),
     )
 
