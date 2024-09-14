@@ -1,30 +1,37 @@
 import asyncio
 import asyncpg
 
+config = {
+    "database": "demo_db",
+    "user": "postgres",
+    "password": "password",
+    "host": "localhost",
+    "port": "5432",
+}
+
+async def connect_to_postgres():
+    pg_config = config.copy()
+    pg_config["database"] = "postgres"
+    return await asyncpg.connect(
+        **pg_config
+    )
+
+async def connect_to_db():
+    return await asyncpg.connect(
+        **config
+    )
 
 async def create_database():
     # Connect to the default 'postgres' database to create a new database
-    conn = await asyncpg.connect(
-        database="postgres",
-        user="postgres",
-        password="password",
-        host="localhost",
-        port="5432",
-    )
-    await conn.execute("DROP DATABASE IF EXISTS demo_db;")
-    await conn.execute("CREATE DATABASE demo_db;")
+    conn = await connect_to_postgres()
+    await conn.execute(f"DROP DATABASE IF EXISTS {config["database"]};")
+    await conn.execute(f"CREATE DATABASE {config["database"]};")
     await conn.close()
 
 
 async def setup_table():
-    # Connect to the newly created 'demo_db' database to create a new table
-    conn = await asyncpg.connect(
-        database="demo_db",
-        user="postgres",
-        password="password",
-        host="localhost",
-        port="5432",
-    )
+    # Connect to the newly created database to create a new table
+    conn = await connect_to_db()
 
     await conn.execute(
         """

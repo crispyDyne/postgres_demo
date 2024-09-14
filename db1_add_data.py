@@ -1,17 +1,12 @@
 import asyncio
-import asyncpg
 import random
+
+from db0_setup_database import connect_to_db
 
 
 async def add_data():
-    # Connect to the 'demo_db' database to insert data
-    conn = await asyncpg.connect(
-        database="demo_db",
-        user="postgres",
-        password="password",
-        host="localhost",
-        port="5432",
-    )
+    # Connect to the database to insert data
+    conn = await connect_to_db()
     # Insert random data into the 'data_table' table every 5 seconds
     try:
         while True:

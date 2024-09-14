@@ -1,5 +1,6 @@
 import asyncio
-import asyncpg
+
+from db0_setup_database import connect_to_db
 
 
 async def fetch_and_print_data(conn, payload):
@@ -19,14 +20,8 @@ async def fetch_and_print_data(conn, payload):
 
 
 async def listen_notifications():
-    # Connect to the 'demo_db' database to listen for notifications
-    conn = await asyncpg.connect(
-        database="demo_db",
-        user="postgres",
-        password="password",
-        host="localhost",
-        port="5432",
-    )
+    # Connect to the database to listen for notifications
+    conn = await connect_to_db()
 
     # Listen to the 'data_channel' channel
     async def on_notify(conn, pid, channel, payload):
