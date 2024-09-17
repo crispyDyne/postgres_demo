@@ -1,9 +1,7 @@
 import asyncio
 
 from db0_setup_database import create_database
-from db_config import connect_to_db
-
-channels = ["channel_1", "channel_2", "channel_3"]
+from db_config import connect_to_db, channels
 
 
 async def make_hypertable(conn, table_name):
@@ -95,14 +93,14 @@ async def setup_table_with_timescale(conn, table_name):
         """
     )
 
+    channels_str = ", ".join([f"{channel} DOUBLE PRECISION" for channel in channels])
+
     await conn.execute(
-        """
+        f"""
         CREATE TABLE data_table (
             id SERIAL,
             time TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-            channel_1 DOUBLE PRECISION,
-            channel_2 DOUBLE PRECISION,
-            channel_3 DOUBLE PRECISION
+            {channels_str}
         );
         """
     )

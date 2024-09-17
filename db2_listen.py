@@ -22,7 +22,6 @@ async def listen_notifications():
 
     # Listen to the 'data_channel' channel
     async def on_notify(conn, pid, channel, payload):
-        print(f"Got notification for ID: {payload}")
         await fetch_and_print_data(conn, payload)
 
     await conn.add_listener("data_channel", on_notify)

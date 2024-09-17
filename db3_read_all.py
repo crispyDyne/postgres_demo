@@ -7,10 +7,7 @@ async def read_all_data():
     conn = await connect_to_db()
     rows = await conn.fetch("SELECT * FROM data_table;")
     for row in rows:
-        print(
-            f"ID={row['id']}, Time={row['time']}, "
-            f"Channel 1={row['channel_1']}, Channel 2={row['channel_2']}, Channel 3={row['channel_3']}"
-        )
+        print(row)
     await conn.close()
 
 
