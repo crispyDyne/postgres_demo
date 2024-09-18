@@ -49,6 +49,11 @@ Things most likely to go wrong:
     sudo apt-get install postgresql-client
     ```
 
+4. Create the folder for postgres data (not 100% sure this is necessary):
+    ```bash
+    mkdir -p ~/timescale_data
+    ```
+
 ## Run a TimescaleDB Container
     
 ```bash
@@ -60,6 +65,23 @@ This command does the following:
 - `-d`: Runs the container in detached mode (background).
 
 The configuration for the TimescaleDB container is defined in the `docker-compose.yml` file. You can customize this file to change the container's settings, such as the port mapping, environment variables, and volumes.
+
+## Enable local access to the database (not 100% sure this is necessary)
+Edit the `~/timescaledb/postgresql.conf` so it will listen on all interfaces:
+
+Look for the listen_addresses line and change it to:
+```
+listen_addresses = '*'
+```
+
+Edit `~timescaledb/pg_hba.conf`to allow access from your local network:
+
+Add a line like this at the bottom of the file:
+```
+host    all             all             192.168.1.0/24         md5
+```
+
+Replace 192.168.1.0/24 with your local network’s IP range.
 
 ## Other Useful Commands
 

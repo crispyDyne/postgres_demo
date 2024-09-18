@@ -9,7 +9,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: demo_db
+      PGDATA: /var/lib/postgresql/data
     volumes:
-      - timescale_data:/var/lib/postgresql/data
-volumes:
-  timescale_data:
+      - /home/aqua/timescale_data:/var/lib/postgresql/data
