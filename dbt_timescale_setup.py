@@ -130,7 +130,7 @@ async def setup_table_with_timescale(conn, table):
         """
     )
 
-    channels_str = ", ".join([f"{column} float NOT NULL" for column in columns])
+    channels_str = ", ".join([f"{column} DOUBLE PRECISION NOT NULL" for column in columns])
 
     await conn.execute(
         f"""
