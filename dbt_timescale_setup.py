@@ -4,6 +4,8 @@ from db0_setup_database import destroy_then_create_database
 from db_config import connect_to_db, channels
 
 
+durations = ["second", "minute", "hour", "day", "month", "year"]
+
 async def destroy_then_create_devices_table(conn):
     await conn.execute(
         """
@@ -65,7 +67,6 @@ def aggregate_columns(name: str, most_granular: bool) -> list[str]:
 
 
 async def create_aggregates(conn, table):
-    durations = ["second", "minute", "hour", "day"]
 
     table_name = table["table_name"]
     columns = table["table_columns"]
@@ -116,8 +117,7 @@ async def setup_table_with_timescale(conn, table):
     table_name = table["table_name"]
     columns = table["table_columns"]
 
-    durations = ["second", "minute", "hour", "day"]
-    for duration in durations:
+    for duration in reversed(durations):
         await conn.execute(
             f"""
             DROP MATERIALIZED VIEW IF EXISTS {table_name}_{duration}s CASCADE
