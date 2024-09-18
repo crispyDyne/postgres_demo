@@ -3,22 +3,23 @@ import asyncio
 from db_config import config, channels, connect_to_db, connect_to_postgres
 
 
-async def create_database():
+async def destroy_then_create_database():
     conn = await connect_to_postgres()
     await conn.execute(f'DROP DATABASE IF EXISTS {config["database"]};')
     await conn.execute(f'CREATE DATABASE {config["database"]};')
     await conn.close()
 
 
-async def setup_table():
+async def setup_table(table_name):
     conn = await connect_to_db()
 
     channels_str = ", ".join([f"{channel} DOUBLE PRECISION" for channel in channels])
     await conn.execute(
         f"""
-        CREATE TABLE IF NOT EXISTS data_table (
+        CREATE TABLE {table_name} (
             id SERIAL PRIMARY KEY,
             time TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+            device_id integer NOT NULL default 1,
             {channels_str}
         );
         """
@@ -26,9 +27,9 @@ async def setup_table():
 
     await conn.execute(
         """
-        CREATE OR REPLACE FUNCTION notify_trigger() RETURNS trigger AS $$
+        CREATE OR REPLACE FUNCTION notify_update() RETURNS trigger AS $$
         BEGIN
-            PERFORM pg_notify('data_channel', NEW.id::text);
+            PERFORM pg_notify(TG_TABLE_NAME, NEW.id::text);
             RETURN NEW;
         END;
         $$ LANGUAGE plpgsql;
@@ -36,11 +37,11 @@ async def setup_table():
     )
 
     await conn.execute(
-        """
-        CREATE TRIGGER data_insert_notify
-        AFTER INSERT ON data_table
+        f"""
+        CREATE TRIGGER {table_name}_inserted
+        AFTER INSERT ON {table_name}
         FOR EACH ROW
-        EXECUTE FUNCTION notify_trigger();
+        EXECUTE FUNCTION notify_update();
         """
     )
 
@@ -48,8 +49,8 @@ async def setup_table():
 
 
 async def main():
-    await create_database()
-    await setup_table()
+    await destroy_then_create_database()
+    await setup_table("data_table")
     print("Database and table setup complete.")
 
 

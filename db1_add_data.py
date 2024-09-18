@@ -4,10 +4,10 @@ import random
 from db_config import connect_to_db, channels
 
 
-async def add_data():
+async def add_data(table_name):
     # Connect to the database to insert data
     conn = await connect_to_db()
-    # Insert random data into the 'data_table' table every 5 seconds
+    # Insert random data every 5 seconds
     try:
         channel_str = ", ".join(channels)
         channel_sql = ", ".join([f"${i}" for i in range(1, len(channels) + 1)])
@@ -18,7 +18,7 @@ async def add_data():
 
             await conn.execute(
                 f"""
-                INSERT INTO data_table ({channel_str})
+                INSERT INTO {table_name} ({channel_str})
                 VALUES ({channel_sql});
                 """,
                 *channel_data,
@@ -39,4 +39,4 @@ async def add_data():
 
 
 if __name__ == "__main__":
-    asyncio.run(add_data())
+    asyncio.run(add_data("data_table"))
